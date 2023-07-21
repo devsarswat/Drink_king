@@ -70,7 +70,7 @@
   transition: box-shadow 0.3s ease-in-out;
 }
 .product-div {
-  height: calc(62vh - 24px);
+  height: calc(64vh - 34px);
 }
 
 .card {
