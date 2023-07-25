@@ -129,7 +129,7 @@ const Navbar = () => {
                       <li>
                         <Link
                           className="dropdown-item"
-                          to="/"
+                          to="/setting"
                           onClick={toggleDropdown}
                         >
                           <BsGearFill className="me-2" /> Settings
