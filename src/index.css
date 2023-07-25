@@ -514,6 +514,11 @@
   height: 50px;
   animation: spin 2s linear infinite;
 }
+.setting{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
 
 @keyframes spin {
   0% {

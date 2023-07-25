@@ -7,7 +7,7 @@ import bcrypt from 'bcryptjs';
 import Config from '../Config';
 
 const Settings = () => {
-  const { user, setuser } = useContext(Acontext);
+  const { user, setuser ,setisLogin} = useContext(Acontext);
   const [formData, setFormData] = useState({
     currentPassword: '',
     newPassword: '',
@@ -15,6 +15,7 @@ const Settings = () => {
   });
   const [message, setMessage] = useState('');
   const [currentPasswordCorrect, setCurrentPasswordCorrect] = useState(false);
+  const [deleteAccount, setDeleteAccount] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,13 +27,39 @@ const Settings = () => {
     try {
       const res = await axios.get(`${Config.apikeyuserdata}/${user.id}`);
       setuser(res.data);
-      localStorage.setItem("userid", JSON.stringify(res.data));
+      localStorage.setItem('userid', JSON.stringify(res.data));
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.error('Error fetching user data:', error);
     }
   };
 
+  const handleDeleteAccount = () => {
+    if (formData.currentPassword !== user.password) {
+      setMessage('Current password is incorrect. Cannot delete account.');
+      return;
+    }
+
+    axios
+      .delete(`${Config.apikeyuserdata}/${user.id}`)
+      .then(() => {
+        setMessage('Account deleted successfully.');
+        setCurrentPasswordCorrect(false);
+        setDeleteAccount(false); 
+        setisLogin(localStorage.removeItem("userid"));
+        setuser(null);
+      })
+      .catch((error) => {
+        setMessage('An error occurred while deleting the account.');
+        console.error(error);
+      });
+  };
+
   const handleSubmit = async () => {
+    if (deleteAccount) {
+      handleDeleteAccount();
+      return; 
+    }
+
     if (!currentPasswordCorrect) {
       const isMatch = await bcrypt.compare(formData.currentPassword, user.password);
       if (!isMatch) {
@@ -59,8 +86,8 @@ const Settings = () => {
             newPassword: '',
             confirmPassword: '',
           });
+          setCurrentPasswordCorrect(false);
           fetchData();
-          setCurrentPasswordCorrect(false)
         } catch (error) {
           setMessage('An error occurred while updating the password.');
           console.error(error);
@@ -72,49 +99,82 @@ const Settings = () => {
   return (
     <Container maxWidth="sm">
       <Box mt={5} mb={2}>
-        <Typography variant="h4">Update Password</Typography>
+        <Typography variant="h4">Settings</Typography>
       </Box>
       <Box>
-        {!currentPasswordCorrect ? (<>
-          <TextField
-            label="Current Password"
-            fullWidth
-            name="currentPassword"
-            type="password"
-            value={formData.currentPassword}
-            onChange={handleChange}
-            variant="outlined"
-            margin="normal"
-          />
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Next
-        </Button>
-        </>
+        {!currentPasswordCorrect && !deleteAccount ? (
+          <>
+          <div className='setting'>
+            <Button variant="contained" color="primary" className='my-2' onClick={() => setDeleteAccount(true)}>
+              Delete Account
+            </Button>
+            <Button variant="contained" color="primary" className='my-2' onClick={() => setCurrentPasswordCorrect(true)}>
+              Change Password
+            </Button>
+            </div>
+          </>
         ) : (
           <>
-            <TextField
-              label="New Password"
-              fullWidth
-              name="newPassword"
-              type="password"
-              value={formData.newPassword}
-              onChange={handleChange}
-              variant="outlined"
-              margin="normal"
-            />
-            <TextField
-              label="Confirm Password"
-              fullWidth
-              name="confirmPassword"
-              type="password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              variant="outlined"
-              margin="normal"
-            />
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Update Password
-        </Button>
+            {deleteAccount ? (
+              <>
+                <Typography variant="h6">Are you sure you want to delete your account?</Typography>
+                <TextField
+                  label="Password"
+                  fullWidth
+                  name="currentPassword"
+                  type="password"
+                  value={formData.currentPassword}
+                  onChange={handleChange}
+                  variant="outlined"
+                  margin="normal"
+                />
+                <Button variant="contained" color="secondary" className='mx-2' onClick={handleDeleteAccount}>
+                  Confirm Delete
+                </Button>
+                <Button variant="contained" color="primary" className='my-2 mx-2' onClick={() => setDeleteAccount(false)}>
+                  Cancel
+                </Button>
+              </>
+            ) : (
+              <>
+                <TextField
+                  label="Current Password"
+                  fullWidth
+                  name="currentPassword"
+                  type="password"
+                  value={formData.currentPassword}
+                  onChange={handleChange}
+                  variant="outlined"
+                  margin="normal"
+                />
+                <TextField
+                  label="New Password"
+                  fullWidth
+                  name="newPassword"
+                  type="password"
+                  value={formData.newPassword}
+                  onChange={handleChange}
+                  variant="outlined"
+                  margin="normal"
+                />
+                <TextField
+                  label="Confirm Password"
+                  fullWidth
+                  name="confirmPassword"
+                  type="password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  variant="outlined"
+                  margin="normal"
+                />
+                <Button variant="contained" color="primary" className='mx-2' onClick={handleSubmit}>
+                  Update Password
+                </Button>
+                <Button variant="contained" color="secondary"  className='my-2' onClick={() => setCurrentPasswordCorrect(false)}>
+                  Cancel
+                </Button>
+              </>
+            )}
           </>
         )}
         {message && <div>{message}</div>}
