@@ -35,26 +35,6 @@ const Settings = () => {
     }
   };
 
-  // const handleDeleteAccount = async () => {
-  //   try {
-  //     const isMatch = await bcrypt.compare(formData.currentPassword, user.password);
-  //     if (!isMatch) {
-  //       setMessage('Current password is incorrect. Cannot delete account.');
-  //       return;
-  //     }
-  
-  //     await axios.delete(`${Config.apikeyuserdata}/${user.id}`);
-  //     setMessage('Account deleted successfully.');
-  //     setCurrentPasswordCorrect(false);
-  //     setDeleteAccount(false);
-  //     setisLogin(localStorage.removeItem('userid'));
-  //     setuser(null);
-  //     nevigate("/")
-  //   } catch (error) {
-  //     setMessage('An error occurred while deleting the account.');
-  //     console.error(error);
-  //   }
-  // };
   const handleDeleteAccount = async () => {
     try {
       const isMatch = await bcrypt.compare(formData.currentPassword, user.password);
@@ -63,10 +43,10 @@ const Settings = () => {
         return;
       }
   
-      // If the password is correct, proceed with the account deletion.
       await axios.delete(`${Config.apikeyuserdata}/${user.id}`);
       setMessage('Account deleted successfully.');
-      setisLogin(false); // Set 'isLogin' to false instead of removing from localStorage
+      setisLogin(localStorage.removeItem('userid'))
+      setisLogin(false); 
       setuser(null);
       nevigate("/");
     } catch (error) {
