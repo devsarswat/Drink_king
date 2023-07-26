@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Acontext } from '../App';
 import bcrypt from 'bcryptjs';
 import Config from '../Config';
+import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
   const { user, setuser ,setisLogin} = useContext(Acontext);
@@ -16,6 +17,7 @@ const Settings = () => {
   const [message, setMessage] = useState('');
   const [currentPasswordCorrect, setCurrentPasswordCorrect] = useState(false);
   const [deleteAccount, setDeleteAccount] = useState(false);
+  const nevigate =useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,25 +35,25 @@ const Settings = () => {
     }
   };
 
-  const handleDeleteAccount = () => {
-    if (formData.currentPassword !== user.password) {
-      setMessage('Current password is incorrect. Cannot delete account.');
-      return;
+  const handleDeleteAccount = async () => {
+    try {
+      const isMatch = await bcrypt.compare(formData.currentPassword, user.password);
+      if (!isMatch) {
+        setMessage('Current password is incorrect. Cannot delete account.');
+        return;
+      }
+  
+      await axios.delete(`${Config.apikeyuserdata}/${user.id}`);
+      setMessage('Account deleted successfully.');
+      setCurrentPasswordCorrect(false);
+      setDeleteAccount(false);
+      setisLogin(localStorage.removeItem('userid'));
+      setuser(null);
+      nevigate("/")
+    } catch (error) {
+      setMessage('An error occurred while deleting the account.');
+      console.error(error);
     }
-
-    axios
-      .delete(`${Config.apikeyuserdata}/${user.id}`)
-      .then(() => {
-        setMessage('Account deleted successfully.');
-        setCurrentPasswordCorrect(false);
-        setDeleteAccount(false); 
-        setisLogin(localStorage.removeItem("userid"));
-        setuser(null);
-      })
-      .catch((error) => {
-        setMessage('An error occurred while deleting the account.');
-        console.error(error);
-      });
   };
 
   const handleSubmit = async () => {
