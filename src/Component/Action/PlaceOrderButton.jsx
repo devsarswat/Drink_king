@@ -21,8 +21,6 @@ const PlaceOrderButton = ({ filteredItems, setFilteredItems }) => {
         orderResponses.push(orderResponse);
       }
 
-      console.log(orderResponses);
-
       toast(
         <div>
           <p>Are you sure to order all these products?</p>
@@ -46,7 +44,6 @@ const PlaceOrderButton = ({ filteredItems, setFilteredItems }) => {
                 deleteResponses.push(deleteResponse);
               }
 
-              console.log(deleteResponses);
               setFilteredItems([]);
             }}
             className="btn btn-primary"

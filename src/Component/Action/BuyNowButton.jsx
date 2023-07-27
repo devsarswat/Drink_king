@@ -25,7 +25,6 @@ const BuyNowButton = ({ user, variety }) => {
             axios
               .post(Config.apikeyorder, usercart)
               .then((res) => {
-                console.log(res);
                 toast.success('Your product added successfully');
               })
               .catch((error) => {

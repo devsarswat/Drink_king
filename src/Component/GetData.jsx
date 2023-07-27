@@ -28,7 +28,6 @@ const GetData = () => {
 
   useEffect(() => {
     axios.get(Config.apikeydata).then((res) => {
-      console.log(res.data.Teadata, res.data.varieties);
       setdata([...res.data.Teadata, ...res.data.varieties]);
     });
   }, [setdata]);

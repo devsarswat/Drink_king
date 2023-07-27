@@ -95,10 +95,10 @@ const Profile = () => {
         axios
           .patch(`${Config.apikeyuserdata}/${user.id}`, { image: base64String })
           .then((response) => {
-            console.log("Profile picture uploaded successfully");
+            toast.success("Profile picture uploaded successfully");
           })
           .catch((error) => {
-            console.error("Error uploading profile picture:", error);
+            toast.error("Error uploading profile picture:", error);
           });
       };
 

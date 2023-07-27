@@ -32,7 +32,6 @@ const AddToCartButton = ({ user, variety, setCartItems, quantity }) => {
 
       axios.patch(`${Config.apikeycart}/${existingItem.id}`, { quantity: existingItem.quantity + quantity })
         .then((res) => {
-          console.log(res);
         })
         .catch((error) => {
           console.log(error);
@@ -40,7 +39,6 @@ const AddToCartButton = ({ user, variety, setCartItems, quantity }) => {
     } else {
       axios.post(Config.apikeycart, usercart)
         .then((res) => {
-          console.log(res);
           toast.success('Product Added to Cart');
         })
         .catch((error) => {

@@ -20,7 +20,6 @@ const Cart = () => {
     axios
       .get(Config.apikeycart)
       .then((res) => {
-        console.log(res.data);
         setCartItems(res.data);
       })
       .catch((error) => {
@@ -57,7 +56,6 @@ const Cart = () => {
     axios
       .patch(`${Config.apikeycart}/${itemId}`, { quantity: updatedCartItems.find((item) => item.id === itemId).quantity })
       .then((res) => {
-        console.log(res);
         setCartItems(updatedCartItems);
       })
       .catch((error) => {
@@ -77,7 +75,6 @@ const Cart = () => {
     axios
       .patch(`${Config.apikeycart}/${itemId}`, { quantity: updatedCartItems.find((item) => item.id === itemId).quantity })
       .then((res) => {
-        console.log(res);
         setCartItems(updatedCartItems);
       })
       .catch((error) => {
@@ -89,7 +86,6 @@ const Cart = () => {
     axios
       .delete(`${Config.apikeycart}/${itemId}`)
       .then((res) => {
-        console.log(res);
         const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
         setCartItems(updatedCartItems);
       })

@@ -51,7 +51,6 @@ const Signin = () => {
           axios
             .post(Config.apikeyuserdata, formDataWithEncryptedPasswords)
             .then((res) => {
-              console.log(res.data);
               toast.success("Registration Successfully");
               navigate("/login");
             })

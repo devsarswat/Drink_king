@@ -14,7 +14,6 @@ const Product = () => {
     axios
       .get(Config.apikeydata)
       .then((res) => {
-        console.log(res.data);
         setdata(res.data.varieties);
         navigate("/data");
         setIsLoading(false)
@@ -26,7 +25,6 @@ const Product = () => {
     axios
       .get(Config.apikeydata)
       .then((res) => {
-        console.log(res.data);
         setdata(res.data.Teadata);
         navigate("/data");
         setIsLoading(false)
