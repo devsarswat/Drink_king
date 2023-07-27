@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,useRef,useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Acontext } from "../App";
 import {
@@ -28,6 +28,19 @@ const Navbar = () => {
     setisLogin(localStorage.removeItem("userid"));
     setuser(null);
   };
+  const dropdownRef = useRef(null);
+  const closeDropdown = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsDropdownOpen(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("click", closeDropdown);
+
+    return () => {
+      document.removeEventListener("click", closeDropdown);
+    };
+  }, []);
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary ms-auto mb-2 mb-lg-0">
@@ -49,7 +62,7 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item mx-2">
-              <NavLink className="nav-link" aria-current="page" to="/home">
+              <NavLink className="nav-link" aria-current="page" to="/">
                 Home
               </NavLink>
             </li>
@@ -69,7 +82,8 @@ const Navbar = () => {
                 className="form-control"
               />
             </li>
-            <li className="nav-item mx-2">
+            <li className="nav-item mx-2" ref={dropdownRef}>
+            <div>
               <button
                 className="btn btn-link nav-link"
                 onClick={toggleDropdown}
@@ -159,6 +173,7 @@ const Navbar = () => {
                   )}
                 </ul>
               )}
+              </div>
             </li>
           </ul>
         </div>

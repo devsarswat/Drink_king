@@ -37,6 +37,11 @@ const Profile = () => {
   const handleSaveClick = () => {
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
+      if (JSON.stringify(user) === JSON.stringify(editedUser)) {
+        setIsEditing(false);
+        return;
+      }
+  
       axios
         .patch(`${Config.apikeyuserdata}/${user.id}`, editedUser)
         .then((response) => {
@@ -51,6 +56,7 @@ const Profile = () => {
       setErrors(formErrors);
     }
   };
+  
 
   const fetchData = () => {
     axios
@@ -102,47 +108,56 @@ const Profile = () => {
 
   const validateForm = () => {
     const formErrors = {};
-
-    if (validator.isEmpty(editedUser.email)) {
+  
+    if (!editedUser.email || validator.isEmpty(editedUser.email)) {
       formErrors.email = "Email is required";
     } else if (!validator.isEmail(editedUser.email)) {
       formErrors.email = "Invalid email format";
     }
-
-    if (validator.isEmpty(editedUser.name)) {
+  
+    if (!editedUser.name || validator.isEmpty(editedUser.name)) {
       formErrors.name = "Name is required";
     } else if (validator.isNumeric(editedUser.name)) {
       formErrors.name = "Name must not contain numbers";
     }
-
-    if (validator.isEmpty(editedUser.address)) {
+  
+    if (!editedUser.address || validator.isEmpty(editedUser.address)) {
       formErrors.address = "Address is required";
     } else if (validator.isNumeric(editedUser.address)) {
       formErrors.address = "Address must not contain numbers";
     }
-
-    if (validator.isEmpty(editedUser.zipCode)) {
+  
+    if (!editedUser.zipCode || validator.isEmpty(editedUser.zipCode)) {
       formErrors.zipCode = "Zip code is required";
     } else if (!validator.isNumeric(editedUser.zipCode)) {
       formErrors.zipCode = "Zip code must only contain numbers";
     }
-
-    if (validator.isEmpty(editedUser.phone)) {
+  
+    if (!editedUser.phone || validator.isEmpty(editedUser.phone)) {
       formErrors.phone = "Phone number is required";
     } else if (!validator.isNumeric(editedUser.phone)) {
       formErrors.phone = "Phone number must only contain numbers";
     } else if (!validator.isLength(editedUser.phone, { min: 10, max: 10 })) {
       formErrors.phone = "Phone number must be 10 digits";
     }
-    if (validator.isEmpty(editedUser.gender)) {
+  
+    if (!editedUser.gender || validator.isEmpty(editedUser.gender)) {
       formErrors.gender = "Gender is required";
     }
-
+  
     return formErrors;
   };
+  const updated=(!user.address || !user.phone || !user.zipCode)
 
   return (
     <>
+    {updated && (
+               <div className="update-re">
+               <Typography variant="body1" color="error">
+                  Update your profile
+                </Typography>
+               </div> 
+              )}
       <div className="container-p">
         {isEditing ? (
           <Button onClick={handleSaveClick} className="edit-btn">

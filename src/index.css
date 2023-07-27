@@ -136,6 +136,22 @@
   border-radius: 100%;
   margin-left: 15px;
 }
+.update-re {
+  background-color: #a2e2c4;
+  border: 2px solid #fff;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-left: 10%;
+}
 
 .dropdown-menu {
   right: 15px;
@@ -163,10 +179,6 @@
   margin-right: -10px;
 }
 .card-container-e {
-  /* display: flex;
-  flex-wrap: wrap;
-  width: 80%;
-  margin-left: 30px; */
   padding-top: 10px;
   place-items: center;
     display: flex;
@@ -279,15 +291,14 @@
   padding-left: 10%;
 }
 .profile-photo {
-  width: 16%;
+  width: 50%;
   height: 180px;
   border-radius: 10%;
   display: flex;
-  background-color: #ccc;
   justify-content: center;
   align-items: center;
   margin-top: 1rem;
-  margin-left: 7rem;
+  margin-left: 4rem;
 }
 .profile-uplod {
   padding: 15px 0px;
@@ -303,7 +314,7 @@
 .profile-picture {
   height: 180px;
   border-radius: 10%;
-  background-color: #ccc;
+  /* background-color: #ccc; */
 }
 
 .social-media {
@@ -641,7 +652,6 @@
   }
   .profile-photo {
     width: 50%;
-    background-color: #ccc;
     margin-left: 4rem;
     margin-top: 1rem;
   }

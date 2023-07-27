@@ -16,6 +16,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loading from "./Component/Action/Loading";
 import Settings from "./Component/Settings";
+import Config from "./Config";
+import axios from "axios";
 export const Acontext = createContext();
 
 const App = () => {
@@ -31,7 +33,7 @@ const App = () => {
     return storedData ? JSON.parse(storedData) : [];
   });
   const [cartItems, setCartItems] = useState([]);
-  const [user, setuser] = useState(udata);
+  const [user, setuser] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
  
   useEffect(() => {
@@ -40,6 +42,17 @@ const App = () => {
       setIsLoading(false);
     }, 500);
   }, [data]);
+  useEffect(() => {
+    if (udata()) {
+      axios.get(`${Config.apikeyuserdata}/${udata()}`)
+        .then((res) => {
+          setuser(res.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    }
+  }, [setuser]);
 
   return (
     <Router>
